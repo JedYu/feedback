@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>Super Mode</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+	<script src="/static/js/jquery-2.1.3.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="/static/js/bootstrap.min.js"></script>
+
+	<style type="text/css">
+
+
+
+		body{font-family: Tahoma, Verdana}
+
+		.well-list {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		.well-list li {
+			padding: 10px 15px;
+			min-height: 20px;
+			border-bottom: 1px solid #eee;
+			border-bottom: 1px solid rgba(0,0,0,0.05);
+		}
+		.well-list li .list-item-name {
+			float: left;
+			position: relative;
+			top: 1px;
+			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+			font-size: 14px;
+		}
+
+		.well-list li:after {
+			content: " ";
+			display: table;
+			clear: both;
+		}
+
+
+
+		.modalDialog {
+			position: fixed;
+			font-family: Arial, Helvetica, sans-serif;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			color:rgba(109,109,109,0.8);
+			z-index: 99999;
+			opacity:0;
+			-webkit-box-sizing:border-box;
+			-moz-box-sizing:border-box;
+			box-sizing:border-box;
+			-webkit-transition: all 0.4s ease-in-out;
+			transition: all 0.4s ease-in-out;
+			-moz-transition: all 0.4s ease-in-out;
+			-webkit-transition: all 0.4s ease-in-out;
+			pointer-events: none;
+		}
+
+		.modalDialog:target {
+			opacity:1;
+			pointer-events: auto;
+		}
+
+
+		.modal-content2 {
+			background: transparent;
+			max-width:480px;
+			margin:0 auto;
+			position: relative;
+			z-index: 999;
+			font-size: 14px;
+			line-height: 1.2;
+			top:30px;
+		}
+		.modalDialog .overlay {
+
+			background: rgba(255, 255, 255, 0.95);
+			height: 100%;
+			left: 0;
+			position: fixed;
+			top: 0;
+			width: 100%;
+			z-index: 10;
+		}
+
+
+	</style>
+
+</head>
+
+<body style="margin-top:60px;font-size:10px">
+
+	<!--  list container  -->
+	<div class="container">
+		<div>
+			<a class="btn btn-sm btn-default" href="/issue">
+				<span class="glyphicon glyphicon-menu-left"></span>
+				返回问题列表
+			</a>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-5" >
+				<div class="page-header">
+					<h3>
+						用户
+						<a tabindex="0" id="popover_add_user" class="btn btn-xs btn-primary my-popover" role="button" data-toggle="popover" data-placement="bottom" data-html="true" 
+						data-content='
+						<div style="padding:16px">
+							<div class="form-group">
+								<label for="input_user_number" class="label-title">工号</label>
+								<input type="text"  id="input_user_number" class="form-control" />
+							</div>
+
+							<div class="form-group">
+								<label for="input_user_name" class="label-title">姓名</label>
+								<input type="text"  id="input_user_name" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label for="input_user_passwd" class="label-title">密码</label>
+								<input type="text"  id="input_user_passwd" class="form-control" />
+							</div>
+							<div id="alert_add_user_response" style="display:none" class="alert alert-danger" role="alert"></div>
+
+							<div class="footer text-right">
+								<button id="btn_add_user" class="btn btn-sm btn-primary"> <i class="glyphicon glyphicon-ok-circle"></i>
+									创建
+								</button>
+
+								<a href="#"  id="btn_add_user_cancel" class="btn btn-sm btn-default"> <i class="glyphicon glyphicon-remove-circle"></i>
+									取消
+								</a>
+							</div>
+						</div>
+						'   >
+						<span class="glyphicon glyphicon-plus" ></span>
+						添加
+					</a>
+				</h3>
+			</div>
+			<div id="div_user_list">
+			<ul class="well-list">
+				{% for user in users %}
+				<li>
+					<div class='list-item-name'>{{ user.name }}<small>({{user.number}})</small></div>
+					<div class='pull-right'>
+						<a class="btn btn-xs btn-default" href="/manage/user/{{user.id}}" id="edit_project_20">修改</a>
+						<a class="btn btn-xs btn-danger" href="/manage/user/{{user.id}}/del">删除</a>
+					</div>
+				</li>
+				{% endfor %}
+			</ul>
+			</div>
+		</div>
+		<div class="col-lg-offset-2 col-lg-5">
+			<div class="page-header">
+				<h3>
+					项目组
+					<a tabindex="0" class="btn btn-xs btn-primary my-popover" role="button" data-toggle="popover" data-placement="bottom" data-html="true" 
+					data-content='
+					<div style="padding:16px">
+						<form role="form" action="/issue/add" method="POST" >
+							<div class="form-group">
+								<label for="site" class="label-title">局点</label>
+								<input type="text"  name="site" class="form-control" />
+							</div>
+
+							<div class="form-group">
+								<label for="desc" class="label-title">问题描述</label>
+								<input type="text"  name="site" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label for="desc" class="label-title">问题描述</label>
+								<input type="text"  name="site" class="form-control" />
+							</div>
+
+							<div class="footer text-right">
+								<button type="submit" class="btn btn-sm btn-primary">
+									<i class="glyphicon glyphicon-ok-circle"></i>
+									创建
+								</button>
+
+								<a href="#" class="btn btn-sm btn-default">
+									<i class="glyphicon glyphicon-remove-circle"></i>
+									取消
+								</a>
+							</div>
+						</form>
+					</div>
+					'   >
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					添加
+				</a>
+
+			</h3>
+		</div>
+
+		<ul class="well-list">
+			{% for team in teams %}
+			<li>
+				<div class='list-item-name'>{{ team.name }}</div>
+				<div class='pull-right'>
+					<a class="btn btn-xs btn-default" href="/manage/team/{{team.id}}" >修改</a>
+					<a class="btn btn-xs btn-danger" href="/manage/team/{{team.id}}/del">删除</a>
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+</div>
+
+<script type="text/javascript">
+
+	$(".my-popover").popover();
+
+	$("body").on("click", "#btn_add_user", function(){
+		var number = $("#input_user_number").val();
+		var name = $("#input_user_name").val();
+		var passwd = $("#input_user_passwd").val();
+
+		if (number == "" || name == "" || passwd == "")
+		{
+			$("#alert_add_user_response").text("请输入完整的信息");
+			$("#alert_add_user_response").show();
+			return;
+		}
+
+		$.post("/manage/user/add", {"number":number, "name":name, "password":passwd}, 
+			function(data)
+			{
+				if (data.code == 0)
+				{
+					$("#popover_add_user").popover('toggle');
+
+				}
+				else
+				{
+
+					$("#alert_add_user_response").text(data.msg);
+					$("#alert_add_user_response").show();
+				}
+			});
+	});
+
+	$("body").on("click", "#btn_add_user_cancel", function(){
+		$("#popover_add_user").popover('toggle');
+		
+	});
+
+	
+
+
+</script>
+
+
+
+</html>

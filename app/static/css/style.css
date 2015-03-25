@@ -1,0 +1,118 @@
+a,
+a:hover,
+a:focus,
+a:active,
+a.active {
+    outline: 0;
+    color: #18bc9c;
+    text-decoration:none;
+}
+body{
+	font-family:  Tahoma;
+}
+table {
+	table-layout: fixed;
+	word-wrap: break-word;
+	font-size: 12px;
+}
+
+
+.modalDialog {
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	color:rgba(109,109,109,0.8);
+	z-index: 99999;
+	opacity:0;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+	-webkit-transition: all 0.4s ease-in-out;
+	transition: all 0.4s ease-in-out;
+	-moz-transition: all 0.4s ease-in-out;
+	-webkit-transition: all 0.4s ease-in-out;
+	pointer-events: none;
+}
+
+.modalDialog:target {
+	opacity:1;
+	pointer-events: auto;
+}
+
+
+.modal-content2 {
+	background: transparent;
+	max-width:960px;
+	margin:0 auto;
+	position: relative;
+	z-index: 999;
+	font-size: 14px;
+	line-height: 1.2;
+	top:30px;
+}
+.modalDialog .overlay {
+
+	background: rgba(255, 255, 255, 0.95);
+	height: 100%;
+	left: 0;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 10;
+}
+
+
+.inp{
+	width: 80%
+}
+
+.form-info-create{
+	font-size:12px;
+	padding: 20px 0 20px 0;
+}
+
+.form-info-create textarea, .form-info-create input, .form-info-create select {
+		color: #333;
+		font-size: 10px;
+		}
+
+
+.footer{
+
+	padding: 20px 0 20px 0;
+}
+
+.topbar{
+	padding-right: 20px;
+}
+.navbar {
+    text-transform: uppercase;
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 700;
+}
+
+.track-record{
+	border-bottom:1px solid #EEE;
+	padding: 2px;
+	margin-right: 4px;
+}
+
+
+
+.issue-open{
+	color:#1c1c1c;
+}
+
+.issue-close{
+	color:#A0A0A0;
+}
+
+.label-title{
+		padding-left: 5px;
+		border-left: 1px solid #CCC;
+		color: #666;
+		font-size: 10px;
+		}

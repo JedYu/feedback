@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>{{user.name}}</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+	<script src="/static/js/jquery-2.1.3.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="/static/js/bootstrap.min.js"></script>
+
+	<style type="text/css">
+		.container textarea {
+			color: #333;
+			font-size: 10px;
+		}
+		.container input {
+			color: #333;
+			font-size: 10px;
+		}
+		.container select {
+			color: #333;
+			font-size: 5px;
+		}
+
+
+
+		.label-title{
+			padding-left: 5px;
+			border-left: 1px solid #CCC;
+			color: #666;
+			font-size: 10px;
+		}
+
+		.track{
+			color:#AAA;
+		}
+
+		.track-time{
+			border-bottom: 1px dashed #DDD;
+		}
+
+		.track-content{
+			border-bottom: 1px dashed #DDD;
+			margin-left: 5px;
+		}
+
+		h1{font-family: Tahoma, Verdana}
+
+		
+	</style>
+
+</head>
+
+<body style="margin-top:60px;font-size:10px">
+
+	<!--  list container  -->
+	<div class="container">
+		<div>
+			<a class="btn btn-sm btn-default" href="/issue">
+				<span class="glyphicon glyphicon-menu-left"></span>
+				返回问题列表
+			</a>
+		</div>
+
+		<div class="page-header">
+			<h1>用户信息</h1>
+		</div>
+
+		<div id="div_info">
+			<div class=" row form-group">
+				<div class="col-lg-4">
+					<label for="number" class="label-title">工号</label>
+					<input type="text"  id="number" class="form-control" disabled value="{{ user.number }}" />
+				</div>
+			</div>
+
+			<div class=" row form-group">
+				<div class="col-lg-4">
+					<label for="name" class="label-title">用户名</label>
+					<input type="text"  id="name" class="form-control" value="{{ user.name }}" />
+				</div>
+			</div>
+
+			<div class=" row form-group">
+				<div class="col-lg-4">
+					<label for="passwd"  class="label-title">
+						<input id="check_mod_passwd" type="checkbox" value="" />
+						修改密码
+					</label>
+					<input type="text"  id="passwd" class="form-control" value="" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<a id="btn_save_user_info" class="btn btn-success">保存</a>
+			</div>
+		</div>
+		
+	</div>
+
+	<script type="text/javascript">
+
+
+		if ($("#check_mod_passwd").prop('checked'))
+		{
+			$("#passwd").show()
+			$("#passwd").attr("disabled", false);
+		}
+		else
+		{
+			$("#passwd").hide()
+			$("#passwd").attr("disabled", true);
+		}
+
+		$("#check_mod_passwd").change(function(){
+
+			if ($("#check_mod_passwd").prop('checked'))
+			{
+				$("#passwd").show()
+				$("#passwd").attr("disabled", false);
+			}
+			else
+			{
+				$("#passwd").hide()
+				$("#passwd").attr("disabled", true);
+			}
+		});
+
+		$("#btn_save_user_info").click(function(){
+
+			if ($("#check_mod_passwd").prop('checked'))
+			{
+				$.post("/manage/user/{{user.id}}/edit",
+				{
+					"name":$("#name").val(),
+					"password":$("#passwd").val()
+				},
+				function(id)
+				{
+				}
+				);
+			}
+			else
+			{
+				$.post("/manage/user/{{user.id}}/edit",
+				{
+					"name":$("#name").val()
+				},
+				function(id)
+				{}
+				);
+			}
+
+		});
+
+	</script>
+
+	</html>

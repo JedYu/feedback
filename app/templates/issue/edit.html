@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>{{issue.id}} > {{ issue.site }}</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+	<script src="/static/js/jquery-2.1.3.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="/static/js/bootstrap.min.js"></script>
+
+	<style type="text/css">
+		.container textarea {
+		color: #333;
+		font-size: 10px;
+		}
+		.container input {
+		color: #333;
+		font-size: 10px;
+		}
+		.container select {
+		color: #333;
+		font-size: 5px;
+		}
+
+
+
+		.label-title{
+		padding-left: 5px;
+		border-left: 1px solid #CCC;
+		color: #666;
+		font-size: 10px;
+		}
+
+		.track{
+		color:#AAA;
+		}
+
+		.track-time{
+		border-bottom: 1px dashed #DDD;
+		}
+
+		.track-content{
+		border-bottom: 1px dashed #DDD;
+		margin-left: 5px;
+		}
+
+		h1{font-family: Tahoma, Verdana}
+	</style>
+
+</head>
+
+<body style="margin-top:60px;font-size:10px">
+
+	<!--  list container  -->
+	<div class="container">
+		<div>
+			<a class="btn btn-sm btn-default" href="/issue">
+				<span class="glyphicon glyphicon-menu-left"></span>
+				返回问题列表
+			</a>
+			<h1 class="text-right">
+
+				<span style="border-left:8px solid #EEE;padding-left:8px">
+					Issue
+					<small>#{{issue.id}}</small>
+				</span>
+			</h1>
+		</div>
+
+		<div class="page-header">
+			<h2>
+				问题信息
+				<button id="btn_enable_mod" class="btn btn-xs btn-default"> <i class="glyphicon glyphicon-edit"></i>
+					修改
+				</button>
+				<button id="btn_save" class="btn btn-xs btn-success"> <i class="glyphicon glyphicon-ok-circle"></i>
+					保存
+				</button>
+			</h2>
+		</div>
+		<div id="div_info">
+
+			<div class="form-group">
+				<label for="site" class="label-title">局点</label>
+				<input type="text"  id="site" class="form-control" value="{{ issue.site }}"></div>
+
+			<div class="form-group">
+				<label for="desc" class="label-title">问题描述</label>
+				<textarea class="form-control"  id="desc" rows="3">{{ issue.desc }}</textarea>
+			</div>
+
+			<div class="form-group">
+				<div class="row">
+					<div class="col-lg-3">
+						<label for="liaison" class="label-title">接口人</label>
+						<input type="text"  id="liaison" class="form-control"   value="{{ issue.liaison }}"></div>
+					<div class="col-lg-3">
+						<label for="create_time" class="label-title">提交时间</label>
+						<input type="text"  id="create_time" class="form-control"  value="{{ issue.create_time }}"></div>
+
+					<div class="col-lg-3">
+						<label for="team" class="label-title">责任项目组</label>
+						<select  id="team" class="form-control" >
+							{% for team in teams %}
+							
+							<option {% if issue.team_id == team.id %}selected{% endif %}>{{team.name}}</option>
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="col-lg-3">
+						<label for="responsible" class="label-title">责任人</label>
+						<input type="text" id="responsible" class="form-control"  value="{{ issue.responsible }}"></div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="row" >
+					<div class="col-lg-6">
+
+						<label for="product" class="label-title">产品</label>
+						<input type="text" id="product" class="form-control" value="{{ issue.product }}"></div>
+					<div class="col-lg-6">
+						<label for="version" class="label-title">版本</label>
+						<input type="text"  id="version" class="form-control"  value="{{ issue.version }}"></div>
+				</div>
+			</div>
+
+			<hr />
+		</div>
+
+		<div class="page-header">
+			<h2>更新纪录</h2>
+		</div>
+		<div>
+			<ul>
+				{% if issue.status == 'Open' %}
+				<li class="track" id="input_track">
+					<input type="text" id="input_track_time" style="width:15%"  placeholder="时间" >
+					<input type="text" id="input_track_content" style="width:60%" placeholder="更新内容">
+					<a class="btn btn-xs btn-add-track">
+						<span class="glyphicon glyphicon-ok"></span>
+					</a>
+				</li>
+				{% endif %}
+
+				{% for track in issue.tracks %}
+				<li class="track">
+					<span class="track-time">{{track.time}}</span>
+					<span class="track-content">{{track.content}}</span>
+					{% if issue.status == 'Open' %}
+					<a class="btn btn-xs btn-del-track" data-tid="{{track.id}}">
+						<span class="glyphicon glyphicon-remove"></span>
+					</a>
+					{% endif %}
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+
+		$("#div_info *").attr("disabled", "disabled");
+
+		$("#btn_save").hide();
+
+		$("#btn_enable_mod").click(function(){
+		$("#div_info *").attr("disabled", false);
+		$("#btn_save").show();
+		$(this).hide();
+		});
+
+		$("#btn_save").click(function(){
+
+			$.post("/issue/{{issue.id}}/edit",
+				{
+					"site":$("#site").val(),
+					"desc":$("#desc").val(),
+					"liaison":$("#liaison").val(),
+					"create_time":$("#create_time").val(),
+					"team":$("#team").find("option:selected").text(),
+					"responsible":$("#responsible").val(),
+					"product":$("#product").val(),
+					"version":$("#version").val()
+				},
+				function(data)
+				{
+					$("#div_info *").attr("disabled", true);
+					$("#btn_save").hide();
+					$("#btn_enable_mod").show();
+				}
+				);
+
+			
+
+
+		});
+
+		
+
+
+		
+
+		var d = new Date();
+		var y = d.getFullYear();
+		var m = (d.getMonth() + 1) > 9 ? (d.getMonth() + 1) :"0" + (d.getMonth() + 1) 
+		var day = d.getDate();
+
+
+		$("#input_track_time").val(y + "/" + m + "/" + day)
+
+		$(".btn-add-track").click(function(){
+			$.post("/issue/{{issue.id}}/track/add",
+				{
+					"time":$("#input_track_time").val(),
+					"content":$("#input_track_content").val()
+				},
+				function(id)
+				{
+					var n = '<li class="track"><span class="track-time">' +$("#input_track_time").val() + '</span><span class="track-content">' + $("#input_track_content").val()+ '</span><a class="btn btn-xs btn-del-track" data-tid="+' + id +'"><span class="glyphicon glyphicon-remove"></span></a></li>';
+
+					$(n).insertAfter("#input_track");
+
+					$("#input_track_content").val("")
+				}
+				);
+
+		});
+
+		$("body").on('click', '.btn-del-track', function(){
+			
+			var tid = $(this).attr("data-tid");
+			var ele = $(this).parent();
+
+			$.post("/issue/{{issue.id}}/track/del", {"id":tid}, 
+				function(data)
+				{
+					ele.remove();
+				});
+
+		});
+		
+		
+
+	</script>
+
+</html>
