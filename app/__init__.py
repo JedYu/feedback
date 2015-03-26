@@ -1,4 +1,4 @@
- # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from flask import Flask, session, g, render_template
 from flask_sqlalchemy import SQLAlchemy
@@ -16,17 +16,18 @@ def not_found(error):
     return render_template('404.html'), 404
 
 
-
-from model.issue.issue import  *
+from model.issue.issue import *
 from model.issue.user import User
 
+
 def create_tables():
-    from model.issue.issue import  Issue, Team
+    from model.issue.issue import Issue, Team
     from model.issue.user import User
+
     db.create_all()
 
-def create_():
 
+def create_():
     u = User("YuJian", "00486", get_encrypt_passwd("123456"))
     u.is_admin = True
     db.session.add(u)
@@ -44,8 +45,8 @@ def create_():
     db.session.add(t2)
     db.session.commit()
 
-
-    x = Issue(u"某代理商",u"NVR202-08EP，B2308P08，手机客户端看到NVR在线但是无法播放实况",u"宇视云眼DCT","M00010120B3305","lisongwei","2015/1/19",u"虞雪辰","Open")
+    x = Issue(u"某代理商", u"NVR202-08EP，B2308P08，手机客户端看到NVR在线但是无法播放实况", u"宇视云眼DCT", "M00010120B3305", "lisongwei",
+              "2015/1/19", u"虞雪辰", "Open")
     db.session.add(x)
     db.session.commit()
     t.issues.append(x)
@@ -65,7 +66,7 @@ def print_():
 
 
 # def test_db():
-#     x = Issue(u"某代理商",u"NVR202-08EP，B2308P08，手机客户端看到NVR在线但是无法播放实况",u"宇视云眼DCT","M00010120B3305","lisongwei","2015/1/19",u"虞雪辰","Open")
+# x = Issue(u"某代理商",u"NVR202-08EP，B2308P08，手机客户端看到NVR在线但是无法播放实况",u"宇视云眼DCT","M00010120B3305","lisongwei","2015/1/19",u"虞雪辰","Open")
 #
 #     db.session.add(x)
 #     db.session.commit()
@@ -81,6 +82,8 @@ def print_():
 @app.before_request
 def load_current_user():
     g.user = User.query.filter_by(number=session['number']).first() if 'number' in session else None
+    g.users = User.query.all()
+    g.teams = Team.query.all()
 
 #
 # @app.teardown_request
@@ -90,6 +93,7 @@ def load_current_user():
 
 
 from app.view import issue, manage
+
 app.register_blueprint(manage.mod)
 app.register_blueprint(issue.mod)
 

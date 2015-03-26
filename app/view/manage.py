@@ -1,6 +1,6 @@
- # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, request, redirect, url_for, session, g,flash, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, session, g, flash, jsonify
 from sqlalchemy.exc import IntegrityError
 from app.util import *
 from app.model.issue.user import User
@@ -27,7 +27,8 @@ def login():
     if request.method == 'POST':
         print  request.form['number'], request.form['password']
 
-        user = User.query.filter_by(number=request.form['number']).filter_by(password=get_encrypt_passwd(request.form['password'])).first()
+        user = User.query.filter_by(number=request.form['number']).filter_by(
+            password=get_encrypt_passwd(request.form['password'])).first()
         if not user:
             flash(u"用户名或密码错误，请重新输入")
             return redirect(url_for('manage.login'))
@@ -43,7 +44,7 @@ def login():
 @mod.route('/user/<uid>', methods=['GET', 'POST'])
 @login_required
 def user(uid):
-    if uid != g.user.id   and not g.user.is_admin:
+    if uid != g.user.id and not g.user.is_admin:
         return "Nop"
 
     if request.method == 'POST':
@@ -54,6 +55,7 @@ def user(uid):
         user = User.query.filter_by(id=uid).first()
         return render_template('manage/user.html', user=user)
 
+
 @mod.route('/super')
 @admin_required
 def super():
@@ -62,26 +64,22 @@ def super():
     return render_template('manage/super.html', users=users, teams=teams)
 
 
-
-
 @mod.route('/user/add', methods=['POST'])
 @login_required
 def user_add():
-
     try:
-        user = User(request.form.get("name", ""), request.form.get("number", ""), get_encrypt_passwd(request.form.get("password", "")))
+        user = User(request.form.get("name", ""), request.form.get("number", ""),
+                    get_encrypt_passwd(request.form.get("password", "")))
         db.session.add(user)
         db.session.commit()
     except IntegrityError as e:
         print "IntegrityError({0})".format(e.message)
-        return jsonify(code=1,msg=u"该工号已被注册")
+        return jsonify(code=1, msg=u"该工号已被注册")
     except Exception as e:
         print "Error({0})".format(e.message)
-        return jsonify(code=1,msg=e.message)
+        return jsonify(code=1, msg=e.message)
 
-    return jsonify(code=0,msg="")
-
-
+    return jsonify(code=0, msg="")
 
 
 @mod.route('/user/<uid>/edit', methods=['POST'])
@@ -93,9 +91,7 @@ def user_edit(uid):
         user.password = get_encrypt_passwd(passwd)
     user.name = request.form['name']
     db.session.commit()
-    return redirect(url_for('manage.user'))
-
-
+    return jsonify(code=0, msg="")
 
 
 @mod.route('/user/<uid>/del')
@@ -107,10 +103,19 @@ def user_del(uid):
     return redirect(url_for('manage.super'))
 
 
-
 @mod.route('/team/<tid>')
 @admin_required
 def team(tid):
     team = Team.query.filter_by(id=tid).first()
-    manager = User.query.filter_by(id=team.manager_id)
-    return render_template('manage/team.html', team=team)
+    users = User.query.all()
+    return render_template('manage/team.html', team=team, users=users)
+
+
+@mod.route('/team/<tid>/edit', methods=['POST'])
+@login_required
+def team_edit(tid):
+    team = Team.query.filter_by(id=tid).first()
+    team.name = request.form['name']
+    team.manager_id = request.form['manager']
+    db.session.commit()
+    return jsonify(code=0, msg="")

@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>{% block title %}{% endblock %} - 局点问题跟踪系统</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/css/bootstrap-select.min.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+
+	<script src="/static/js/jquery-2.1.3.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+
+	{% block csss %}{% endblock %}
+
+</head>
+
+<body>
+
+	<!-- nav -->
+	<nav class="navbar navbar-default navbar-static-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">局点问题跟踪系统</a>
+			</div>
+
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+						{% if team_name %} {{team_name}} {% else %} 全部 {% endif %}
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						{% for team in g.teams %}
+						<li>
+							<a href="/issue?team={{team.name}}">{{team.name}}</a>
+						</li>
+						{% endfor %}
+						<li role="presentation" class="divider"></li>
+						<li>
+							<a href="/issue">全部</a>
+						</li>
+
+					</ul>
+				</li>
+			</ul>
+
+			<div class="topbar navbar-right">
+				<span class="navbar-text ">
+					<a href="/manage/user/{{g.user.id}}" class="navbar-link">
+						<span class="glyphicon glyphicon-user"></span>
+						{{g.user.name}}
+					</a>
+				</span>
+
+				{% if g.user.is_admin %}
+				<span class="navbar-text ">
+					<a href="/manage/super" class="navbar-link">
+						<span class="glyphicon glyphicon-king"></span>
+						管理员
+					</a>
+				</span>
+				{% endif %}
+
+				<span class="navbar-text ">
+					<a href="#create" class="navbar-link">
+						<span class="glyphicon glyphicon-plus"></span>
+						创建问题
+					</a>
+				</span>
+				<span class="navbar-text ">
+					<a href="/issue/export" class="navbar-link">
+						<span class="glyphicon glyphicon-export"></span>
+						导出列表
+					</a>
+				</span>
+			</div>
+		</div>
+	</nav>
+
+	<div>
+		{% block container %}{% endblock %}
+
+	</div>
+
+	<div>
+		{% block footer %}{% endblock %}
+	</div>
+<!-- /.modal -->
+</body>
+
+
+{% block scripts %}{% endblock %}
+</html>

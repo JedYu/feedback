@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}{{team.name}}{% endblock %}
+{% block csss %}
+	<style type="text/css">
+		.container textarea {
+			color: #333;
+			font-size: 10px;
+		}
+		.container input {
+			color: #333;
+			font-size: 10px;
+		}
+		.container select {
+			color: #333;
+			font-size: 5px;
+		}
+
+
+
+		.label-title{
+			padding-left: 5px;
+			border-left: 1px solid #CCC;
+			color: #666;
+			font-size: 10px;
+		}
+
+		.track{
+			color:#AAA;
+		}
+
+		.track-time{
+			border-bottom: 1px dashed #DDD;
+		}
+
+		.track-content{
+			border-bottom: 1px dashed #DDD;
+			margin-left: 5px;
+		}
+
+		h1{font-family: Tahoma, Verdana}
+
+		
+	</style>
+{% endblock %}
+{% block container %}
+	<div class="container">
+
+		<div class="page-header">
+			<h1>项目组信息</h1>
+		</div>
+
+		<div id="div_info">
+
+			<div class=" row form-group">
+				<div class="col-lg-4">
+					<label for="name" class="label-title">名称</label>
+					<input type="text"  id="input_name" class="form-control" value="{{ team.name }}" />
+				</div>
+			</div>
+
+			<div class=" row form-group">
+				<div class="col-lg-4">
+					<label for="team" class="label-title">PL</label>
+					<select  id="select_team" class="form-control" >
+						{% for user in users %}
+						<option {% if team.manager_id == user.id %}selected{% endif %} data-uid={{user.id}}>{{user.name}}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<a id="btn_save_team_info" class="btn btn-success">保存</a>
+			</div>
+		</div>
+		
+	</div>
+{% endblock %}
+
+{% block scripts %}
+	<script type="text/javascript">
+
+		$("#btn_save_team_info").click(function(){
+			$.post("/manage/team/{{team.id}}/edit",
+				{
+					"name":$("#input_name").val(),
+					"manager":$("#select_team").find("option:selected").attr("data-uid")
+				},
+				function(id)
+				{
+					alert("修改成功");
+				}
+				);
+
+		});
+
+	</script>
+{% endblock %}
