@@ -1,5 +1,5 @@
 from app import app
-
+import sys
 def init():
     from app import db
     from app.model.issue.user import User
@@ -12,4 +12,8 @@ def init():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 'init':
+            init()
+    else:
+        app.run(debug=True)
