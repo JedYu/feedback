@@ -141,16 +141,16 @@
                     <form role="form" action="/manage/login" method="POST" id="login-form" autocomplete="off">
                         <div class="form-group">
                             <label for="number" class="sr-only">工号</label>
-                            <input type="text" name="number" id="username" class="form-control" placeholder="00486">
+                            <input type="text" name="number" id="username" class="form-control" placeholder="工号">
                         </div>
                         <div class="form-group">
                             <label for="password" class="sr-only">密码</label>
-                            <input type="password" name="password" id="password" class="form-control" placeholder="">
+                            <input type="password" name="password" id="password" class="form-control" placeholder="密码">
                         </div>
                         
-                        <div class="checkbox">
+                        <div class="checkbox text-right">
                             <span class="character-checkbox" onclick="showPassword()"></span>
-                            <span class="label">Show password</span>
+                            <span class="label">显示密码</span>
                         </div>
                         <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="登录">
                     </form>
@@ -175,17 +175,17 @@
 <script type="text/javascript">
   function showPassword() {
     
-    var key_attr = $('#key').attr('type');
+    var key_attr = $('#password').attr('type');
     
     if(key_attr != 'text') {
         
         $('.checkbox').addClass('show');
-        $('#key').attr('type', 'text');
+        $('#password').attr('type', 'text');
         
     } else {
         
         $('.checkbox').removeClass('show');
-        $('#key').attr('type', 'password');
+        $('#password').attr('type', 'password');
         
     }
     

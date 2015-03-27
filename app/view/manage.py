@@ -30,7 +30,7 @@ def login():
         user = User.query.filter_by(number=request.form['number']).filter_by(
             password=get_encrypt_passwd(request.form['password'])).first()
         if not user:
-            flash(u"用户名或密码错误，请重新输入")
+            flash(u"工号或密码错误，请重新输入")
             return redirect(url_for('manage.login'))
 
         session['number'] = request.form['number']
@@ -39,7 +39,11 @@ def login():
     else:
         print request.args.get('next', '')
         return render_template('manage/login.html')
-
+@mod.route('/logout')
+def logout():
+    session['number'] = None
+    g.user = None
+    return render_template('manage/login.html')
 
 @mod.route('/user/<uid>', methods=['GET', 'POST'])
 @login_required
