@@ -123,6 +123,10 @@
 				<a href="/issue/{{ issue.id }}/open" class="btn btn-xs btn-success btn-add-track-close">
 					打开问题
 				</a>
+			{% else %}
+				<a href="/issue/{{ issue.id }}/close" class="btn btn-xs btn-success btn-add-track-close">
+					关闭
+				</a>
 			{%endif%}
 			</h2>
 		</div>
@@ -134,9 +138,6 @@
 					<input type="text" id="input_track_content" style="width:30%" placeholder="更新内容">
 					<a class="btn btn-xs btn-primary btn-add-track">
 						更新
-					</a>
-					<a href="/issue/{{ issue.id }}/close" class="btn btn-xs btn-success btn-add-track-close">
-						关闭
 					</a>
 				</li>
 				{% endif %}
