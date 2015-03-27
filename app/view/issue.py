@@ -15,7 +15,7 @@ def index():
 
     issues = []
     if not team_name:
-        issues = Issue.query.order_by(Issue.create_time.desc()).all()
+        issues = Issue.query.order_by(Issue.status.desc()).order_by(Issue.id.desc()).all()
     else:
         team = Team.query.filter_by(name=team_name).first()
         if team:
