@@ -24,7 +24,7 @@
   :: Login Section
   -------------------------------------------------- */
 #login {
-    padding-top: 50px
+    padding-top: 160px
 }
 #login .form-wrap {
     width: 30%;
@@ -32,10 +32,13 @@
 }
 #login h1 {
     color: #1fa67b;
-    font-size: 18px;
+    font-size: 36px;
     text-align: center;
     font-weight: bold;
     padding-bottom: 20px;
+}
+#login h1 span{
+  border-bottom: 1px dashed #EEE;
 }
 #login .form-group {
     margin-bottom: 25px;
@@ -128,7 +131,7 @@
       <div class="row">
           <div class="col-xs-12">
               <div class="form-wrap">
-                <h1>用户登录</h1>
+                <h1><span>用户登录</span></h1>
                   
                     
                           {% with messages = get_flashed_messages() %}
@@ -166,7 +169,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <p>Powered by <strong><a href="http://airimos.com" target="_blank">YuJian</a></strong></p>
+                <p>Powered by <strong><a href="http://ys7.co" target="_blank">Y00486</a></strong></p>
             </div>
         </div>
     </div>
