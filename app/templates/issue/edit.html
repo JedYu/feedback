@@ -121,11 +121,16 @@
 			<h2>更新纪录
 			{% if issue.status == 'Close' %}
 				<a href="/issue/{{ issue.id }}/open" class="btn btn-xs btn-success btn-add-track-close">
+
+					<span class="glyphicon glyphicon-eye-open"></span>
+				
 					打开问题
 				</a>
 			{% else %}
 				<a href="/issue/{{ issue.id }}/close" class="btn btn-xs btn-success btn-add-track-close">
-					关闭
+
+					<span class="glyphicon glyphicon-eye-close"></span>
+					关闭问题
 				</a>
 			{%endif%}
 			</h2>
@@ -137,6 +142,8 @@
 					<input type="text" id="input_track_time" style="width:15%"  placeholder="时间" >
 					<input type="text" id="input_track_content" style="width:30%" placeholder="更新内容">
 					<a class="btn btn-xs btn-primary btn-add-track">
+					<span class="glyphicon glyphicon-tags"></span>
+					
 						更新
 					</a>
 				</li>
