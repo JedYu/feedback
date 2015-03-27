@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from datetime import timedelta
 from flask import Flask, session, g, render_template
 from flask_sqlalchemy import SQLAlchemy
 import config
@@ -33,6 +33,11 @@ from model.issue.user import User
 #
 #     s = Issue.query.all()
 #     print s[0].tracks
+
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(hours=24)
 
 @app.before_request
 def load_current_user():

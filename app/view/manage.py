@@ -41,7 +41,7 @@ def login():
         return render_template('manage/login.html')
 @mod.route('/logout')
 def logout():
-    session['number'] = None
+    session.clear()
     g.user = None
     return render_template('manage/login.html')
 
