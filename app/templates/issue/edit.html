@@ -1,15 +1,6 @@
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-	<meta charset="utf-8">
-	<title>{{issue.id}} > {{ issue.site }}</title>
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
-
-	<script src="/static/js/jquery-2.1.3.min.js"></script>
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="/static/js/bootstrap.min.js"></script>
+{% extends "base.html" %}
+{% block title %}{{issue.id}} > {{ issue.site }}{% endblock %}
+{% block csss %}
 
 	<style type="text/css">
 		.container textarea {
@@ -50,18 +41,12 @@
 		h1{font-family: Tahoma, Verdana}
 	</style>
 
-</head>
+{% endblock %}
 
-<body style="margin-top:60px;font-size:10px">
-
-	<!--  list container  -->
+{% block container %}
 	<div class="container">
 		<div>
-			<a class="btn btn-sm btn-default" href="/issue">
-				<span class="glyphicon glyphicon-menu-left"></span>
-				返回问题列表
-			</a>
-			<h1 class="text-right">
+			<h1>
 
 				<span style="border-left:8px solid #EEE;padding-left:8px">
 					Issue
@@ -163,6 +148,9 @@
 
 	</div>
 
+{% endblock %}
+
+{% block scripts %}
 	<script type="text/javascript">
 
 		$("#div_info *").attr("disabled", "disabled");
@@ -248,5 +236,4 @@
 		
 
 	</script>
-
-</html>
+{% endblock %}

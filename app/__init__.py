@@ -20,51 +20,6 @@ from model.issue.issue import *
 from model.issue.user import User
 
 
-def create_tables():
-    from model.issue.issue import Issue, Team
-    from model.issue.user import User
-
-    db.create_all()
-
-
-def create_():
-    u = User("YuJian", "00486", get_encrypt_passwd("123456"))
-    u.is_admin = True
-    db.session.add(u)
-
-    u2 = User("test", "00001", get_encrypt_passwd("test"))
-    db.session.add(u2)
-
-    db.session.commit()
-
-    print u.id
-
-    t = Team(u"移动开发组", u.id)
-    t2 = Team(u"<script> alert(1) </script>", u.id)
-    db.session.add(t)
-    db.session.add(t2)
-    db.session.commit()
-
-    x = Issue(u"某代理商", u"NVR202-08EP，B2308P08，手机客户端看到NVR在线但是无法播放实况", u"宇视云眼DCT", "M00010120B3305", "lisongwei",
-              "2015/1/19", u"虞雪辰", "Open")
-    db.session.add(x)
-    db.session.commit()
-    t.issues.append(x)
-    t2.issues.append(x)
-
-    db.session.commit()
-
-
-def print_():
-    users = User.query.all()
-    print users
-
-    teams = Team.query.all()
-    print teams
-
-    print teams[0].issues
-
-
 # def test_db():
 # x = Issue(u"某代理商",u"NVR202-08EP，B2308P08，手机客户端看到NVR在线但是无法播放实况",u"宇视云眼DCT","M00010120B3305","lisongwei","2015/1/19",u"虞雪辰","Open")
 #

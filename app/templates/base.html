@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>{% block title %}{% endblock %} - 局点问题跟踪系统</title>
-	<!-- Latest compiled and minified CSS -->
+	<link rel="shortcut icon" href="/static/favicon.ico" /> 
 	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/static/css/bootstrap-select.min.css">
 	<link rel="stylesheet" href="/static/css/style.css">
@@ -22,7 +22,7 @@
 	<nav class="navbar navbar-default navbar-static-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">局点问题跟踪系统</a>
+				<a class="navbar-brand" href="/issue">局点问题跟踪系统</a>
 			</div>
 
 			<ul class="nav navbar-nav">
@@ -47,6 +47,16 @@
 			</ul>
 
 			<div class="topbar navbar-right">
+
+				{% if g.user.is_admin %}
+				<span class="navbar-text ">
+					<a href="/manage/super" class="navbar-link">
+						<span class="glyphicon glyphicon-cog"></span>
+						管理
+					</a>
+				</span>
+				{% endif %}
+
 				<span class="navbar-text ">
 					<a href="/manage/user/{{g.user.id}}" class="navbar-link">
 						<span class="glyphicon glyphicon-user"></span>
@@ -54,17 +64,9 @@
 					</a>
 				</span>
 
-				{% if g.user.is_admin %}
-				<span class="navbar-text ">
-					<a href="/manage/super" class="navbar-link">
-						<span class="glyphicon glyphicon-king"></span>
-						管理员
-					</a>
-				</span>
-				{% endif %}
 
 				<span class="navbar-text ">
-					<a href="#create" class="navbar-link">
+					<a href="/issue/add" class="navbar-link">
 						<span class="glyphicon glyphicon-plus"></span>
 						创建问题
 					</a>

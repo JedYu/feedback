@@ -16,7 +16,7 @@ mod = Blueprint('manage', __name__, url_prefix='/manage')
 @login_required
 def manage():
     print g.user.is_admin
-    if g.user.is_admin:
+    if not g.user.is_admin:
         return render_template('manage/login.html')
     else:
         return redirect(url_for('issue.index'))
@@ -110,6 +110,19 @@ def team(tid):
     users = User.query.all()
     return render_template('manage/team.html', team=team, users=users)
 
+@mod.route('/team/add', methods=['POST'])
+@login_required
+def team_add():
+    try:
+        team = Team(request.form.get("name", ""), request.form.get("manager", 1))
+        db.session.add(team)
+        db.session.commit()
+    except Exception as e:
+        print "Error({0})".format(e.message)
+        return jsonify(code=1, msg=e.message)
+
+    return jsonify(code=0, msg="")
+
 
 @mod.route('/team/<tid>/edit', methods=['POST'])
 @login_required
@@ -119,3 +132,12 @@ def team_edit(tid):
     team.manager_id = request.form['manager']
     db.session.commit()
     return jsonify(code=0, msg="")
+
+
+@mod.route('/team/<tid>/del')
+@admin_required
+def team_del(tid):
+    team = Team.query.filter_by(id=tid).first()
+    db.session.delete(team)
+    db.session.commit()
+    return redirect(url_for('manage.super'))

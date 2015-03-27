@@ -1,75 +1,7 @@
 
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-	<meta charset="utf-8">
-	<title>局点问题跟踪列表</title>
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/static/css/bootstrap-select.min.css">
-	<link rel="stylesheet" href="/static/css/style.css">
-
-	<script src="/static/js/jquery-2.1.3.min.js"></script>
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="/static/js/bootstrap.min.js"></script>
-
-</head>
-
-<body>
-
-	<!-- nav -->
-	<nav class="navbar navbar-default navbar-static-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">局点问题跟踪列表</a>
-			</div>
-
-			<ul class="nav navbar-nav">
-				<li class="dropdown active">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-						{% if team_name %} {{team_name}} {% else %} 全部 {% endif %}
-						<span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu" role="menu">
-						{% for team in teams %}
-						<li>
-							<a href="/issue?team={{team.name}}">{{team.name}}</a>
-						</li>
-						{% endfor %}
-						<li role="presentation" class="divider"></li>
-						<li>
-							<a href="/issue">全部</a>
-						</li>
-
-					</ul>
-				</li>
-			</ul>
-
-			<div class="topbar navbar-right">
-				<span class="navbar-text ">
-					<a href="/manage/user" class="navbar-link">
-						<span class="glyphicon glyphicon-user"></span>
-						{{user.name}}
-					</a>
-				</span>
-				<span class="navbar-text ">
-					<a href="#create" class="navbar-link">
-						<span class="glyphicon glyphicon-plus"></span>
-						创建问题
-					</a>
-				</span>
-				<span class="navbar-text ">
-					<a href="/issue/export" class="navbar-link">
-						<span class="glyphicon glyphicon-export"></span>
-						导出列表
-					</a>
-				</span>
-			</div>
-		</div>
-	</nav>
-
-	<!--  list container  -->
-	<div>
+{% extends "base.html" %}
+{% block title %}局点问题跟踪列表{% endblock %}
+{% block container %}
 		<table class="table table-hover table-condensed">
 			<thead>
 				<tr>
@@ -137,80 +69,6 @@
 		</tbody>
 	</table>
 
-	<div id="create" class="modalDialog">
-		<form role="form" action="/issue/add" method="POST" id="login-form" autocomplete="off">
-			<div class="modal-content2">
-				<div class="page-header">
-					<h2>局点问题</h2>
-				</div>
-				<div class="form-info-create">
-
-					<div class="form-group">
-						<label for="site" class="label-title">局点</label>
-						<input type="text"  name="site" class="form-control" />
-					</div>
-
-					<div class="form-group">
-						<label for="desc" class="label-title">问题描述</label>
-						<textarea class="form-control"  name="desc" rows="3"></textarea>
-					</div>
-
-					<div class="form-group">
-						<div class="row">
-							<div class="col-lg-3">
-								<label for="liaison" class="label-title">接口人</label>
-								<input type="text"  name="liaison" class="form-control" ></div>
-							<div class="col-lg-3">
-								<label for="create_time" class="label-title">提交时间</label>
-								<input type="text"  name="create_time" class="form-control" ></div>
-
-							<div class="col-lg-3">
-								<label for="team" class="label-title">责任项目组</label>
-								<select  name="team" class="form-control" >
-									{% for team in teams %}
-									<option{% if loop.index0 == 0 %} selected{% endif %}>{{team.name}}</option>
-									{% endfor %}
-								</select>
-							</div>
-
-							<div class="col-lg-3">
-								<label for="responsible" class="label-title">责任人</label>
-								<input type="text" name="responsible" class="form-control" />
-							</div>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<div class="row" >
-							<div class="col-lg-6">
-
-								<label for="product" class="label-title">产品</label>
-								<input type="text" name="product" class="form-control" />
-							</div>
-							<div class="col-lg-6">
-								<label for="version" class="label-title">版本</label>
-								<input type="text"  name="version" class="form-control"  />
-							</div>
-						</div>
-					</div>
-
-				</div>
-
-				<div class="footer  pull-right">
-					<button type="submit" class="btn btn-lg btn-primary"> <i class="glyphicon glyphicon-ok-circle"></i>
-						创建
-					</button>
-
-					<a href="#" class="btn btn-lg btn-default"> <i class="glyphicon glyphicon-remove-circle"></i>
-						取消
-					</a>
-				</div>
-			</div>
-			<div class="overlay"></div>
-		</div>
-	</form>
-
-</div>
 
 <div id= "del" class="modal fade">
 	<div class="modal-dialog modal-sm">
@@ -230,9 +88,8 @@
 	</div>
 	<!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
-</body>
-
+{% endblock %}
+{% block scripts %}
 <script type="text/javascript">
 		$(".my-popover").popover();
 
@@ -251,4 +108,5 @@
 		}
 
 	</script>
-</html>
+{% endblock %}
+

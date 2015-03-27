@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}创建问题{% endblock %}
+{% block csss %}
+
+	<style type="text/css">
+		.container textarea {
+		color: #333;
+		font-size: 10px;
+		}
+		.container input {
+		color: #333;
+		font-size: 10px;
+		}
+		.container select {
+		color: #333;
+		font-size: 5px;
+		}
+
+
+
+		.label-title{
+		padding-left: 5px;
+		border-left: 1px solid #CCC;
+		color: #666;
+		font-size: 10px;
+		}
+
+		.track{
+		color:#AAA;
+		}
+
+		.track-time{
+		border-bottom: 1px dashed #DDD;
+		}
+
+		.track-content{
+		border-bottom: 1px dashed #DDD;
+		margin-left: 5px;
+		}
+
+		h1{font-family: Tahoma, Verdana}
+	</style>
+{% endblock %}
+
+{% block container %}
+<div class="container">
+	<form role="form" action="/issue/add" method="POST" id="login-form" autocomplete="off">
+		<div class="modal-content2">
+			<div class="page-header">
+				<h1>创建局点问题</h1>
+			</div>
+			<div class="form-info-create">
+
+				<div class="form-group">
+					<label for="site" class="label-title">局点</label>
+					<input type="text"  name="site" class="form-control" />
+				</div>
+
+				<div class="form-group">
+					<label for="desc" class="label-title">问题描述</label>
+					<textarea class="form-control"  name="desc" rows="3"></textarea>
+				</div>
+
+				<div class="form-group">
+					<div class="row">
+						<div class="col-lg-3">
+							<label for="liaison" class="label-title">接口人</label>
+							<input type="text"  name="liaison" class="form-control" />
+						</div>
+						<div class="col-lg-3">
+							<label for="create_time" class="label-title">提交时间</label>
+							<input type="text"  name="create_time" class="form-control" />
+						</div>
+
+						<div class="col-lg-3">
+							<label for="team" class="label-title">责任项目组</label>
+							<select  name="team" class="form-control" >
+								{% for team in g.teams %}
+								<option>{{team.name}}</option>
+								{% endfor %}
+							</select>
+						</div>
+
+						<div class="col-lg-3">
+							<label for="responsible" class="label-title">责任人</label>
+							<input type="text" name="responsible" class="form-control" />
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="row" >
+						<div class="col-lg-6">
+							<label for="product" class="label-title">产品</label>
+							<input type="text" name="product" class="form-control" />
+						</div>
+						<div class="col-lg-6">
+							<label for="version" class="label-title">版本</label>
+							<input type="text"  name="version" class="form-control"  />
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="footer">
+				<button type="submit" class="btn btn-lg btn-primary"> <i class="glyphicon glyphicon-ok-circle"></i>
+					创建
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+{% endblock %}
+

@@ -24,28 +24,31 @@ def index():
     return render_template('issue/index.html', issues=issues, teams=teams, team_name=team_name, user=g.user)
 
 
-@mod.route('/add', methods=['POST'])
+@mod.route('/add', methods=['GET','POST'])
 def add():
-    print request.form['site'], request.method
-    x = Issue(request.form.get('site', ''), request.form.get('desc', ''), request.form.get('product', ''),
-              request.form.get('version', ''), request.form.get('liaison', ''), request.form.get('create_time', ''),
-              request.form.get('responsible', ''), request.form.get('status', 'Open'))
+    if request.method == "POST":
+        print request.form['site'], request.method
+        x = Issue(request.form.get('site', ''), request.form.get('desc', ''), request.form.get('product', ''),
+                  request.form.get('version', ''), request.form.get('liaison', ''), request.form.get('create_time', ''),
+                  request.form.get('responsible', ''), request.form.get('status', 'Open'))
 
-    team_name = request.form.get('team', '')
-    if not team_name:
-        pass
+        team_name = request.form.get('team', '')
+        if not team_name:
+            pass
+        else:
+            team = Team.query.filter_by(name=team_name).first()
+            x.team_id = team.id
+        db.session.add(x)
+        db.session.commit()
+
+        t = TrackRecord(datetime.date.today().strftime('%Y/%m/%d'), u"问题创建", x.id)
+        db.session.add(t)
+        db.session.commit()
+
+        print x
+        return redirect(url_for("issue.index"))
     else:
-        team = Team.query.filter_by(name=team_name).first()
-        x.team_id = team.id
-    db.session.add(x)
-    db.session.commit()
-
-    t = TrackRecord(datetime.date.today().strftime('%Y/%m/%d'), u"问题创建", x.id)
-    db.session.add(t)
-    db.session.commit()
-
-    print x
-    return redirect(url_for("issue.index"))
+        return render_template('issue/create.html')
 
 
 @mod.route('/<sid>/edit', methods=['POST', 'GET'])
@@ -84,6 +87,9 @@ def delete(sid):
 def close(sid):
     x = Issue.query.filter_by(id=sid).first()
     x.status = "Close"
+
+    t = TrackRecord(datetime.date.today().strftime('%Y/%m/%d'), u"问题关闭", x.id)
+    db.session.add(t)
     db.session.commit()
     return redirect(url_for("issue.index"))
 
@@ -92,6 +98,9 @@ def close(sid):
 def open(sid):
     x = Issue.query.filter_by(id=sid).first()
     x.status = "Open"
+
+    t = TrackRecord(datetime.date.today().strftime('%Y/%m/%d'), u"问题打开", x.id)
+    db.session.add(t)
     db.session.commit()
     return redirect(url_for("issue.index"))
 
