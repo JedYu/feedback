@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, render_template, request, redirect, url_for, g
+from flask import Blueprint, render_template, request, redirect, url_for, g,jsonify
 from app import db, app
 from app.model.issue.issue import Issue, TrackRecord, Team
 import datetime, time
@@ -85,9 +85,14 @@ def close(sid):
     x = Issue.query.filter_by(id=sid).first()
     x.status = "Close"
 
-    t = TrackRecord(datetime.date.today().strftime('%Y/%m/%d'), u"问题关闭", x.id)
+
+    close_time = datetime.date.today().strftime('%Y/%m/%d')
+    close_content = u"问题关闭"
+
+    t = TrackRecord(close_time, close_content, x.id)
     db.session.add(t)
     db.session.commit()
+
     return redirect(url_for("issue.index"))
 
 
@@ -99,7 +104,7 @@ def open(sid):
     t = TrackRecord(datetime.date.today().strftime('%Y/%m/%d'), u"问题打开", x.id)
     db.session.add(t)
     db.session.commit()
-    return redirect(url_for("issue.index"))
+    return redirect(url_for("issue.edit", sid=sid))
 
 
 @mod.route('/<sid>/track/add', methods=['POST'])

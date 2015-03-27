@@ -118,16 +118,25 @@
 		</div>
 
 		<div class="page-header">
-			<h2>更新纪录</h2>
+			<h2>更新纪录
+			{% if issue.status == 'Close' %}
+				<a href="/issue/{{ issue.id }}/open" class="btn btn-xs btn-success btn-add-track-close">
+					打开问题
+				</a>
+			{%endif%}
+			</h2>
 		</div>
 		<div>
 			<ul>
 				{% if issue.status == 'Open' %}
 				<li class="track" id="input_track">
 					<input type="text" id="input_track_time" style="width:15%"  placeholder="时间" >
-					<input type="text" id="input_track_content" style="width:60%" placeholder="更新内容">
-					<a class="btn btn-xs btn-add-track">
-						<span class="glyphicon glyphicon-ok"></span>
+					<input type="text" id="input_track_content" style="width:30%" placeholder="更新内容">
+					<a class="btn btn-xs btn-primary btn-add-track">
+						更新
+					</a>
+					<a href="/issue/{{ issue.id }}/close" class="btn btn-xs btn-success btn-add-track-close">
+						关闭
 					</a>
 				</li>
 				{% endif %}
@@ -219,6 +228,7 @@
 				);
 
 		});
+
 
 		$("body").on('click', '.btn-del-track', function(){
 			
