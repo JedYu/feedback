@@ -11,17 +11,20 @@ mod = Blueprint('issue', __name__, url_prefix='/issue')
 @mod.route('/')
 @login_required
 def index():
-    team_name = request.args.get('team', '')
-
+    tid = request.args.get('tid', None)
+    team_name = u'全部'
     issues = []
-    if not team_name:
+    if not tid:
         issues = Issue.query.order_by(Issue.status.desc()).order_by(Issue.id.desc()).all()
     else:
-        team = Team.query.filter_by(name=team_name).first()
+        team = Team.query.filter_by(id=tid).first()
         if team:
             issues = team.issues
-    teams = Team.query.all()
-    return render_template('issue/index.html', issues=issues, teams=teams, team_name=team_name, user=g.user)
+            team_name = team.name
+        else:
+            issues = Issue.query.order_by(Issue.status.desc()).order_by(Issue.id.desc()).all()
+
+    return render_template('issue/index.html', issues=issues, team_name=team_name, user=g.user)
 
 
 @mod.route('/add', methods=['GET','POST'])
