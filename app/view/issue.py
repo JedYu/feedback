@@ -139,10 +139,14 @@ def export():
     import xlwt
 
     style_header = xlwt.easyxf('pattern: pattern solid, fore_colour dark_teal; font: bold on,colour_index white;borders:top 1,bottom 1, left 1, right 1, top_colour gray40 , bottom_colour gray40, left_colour gray40, right_colour gray40')
-    style_data = xlwt.easyxf(
-        'pattern: pattern solid, fore_colour white ; font: colour_index gray80 ;borders:top 1,bottom 1, left 1, right 1, top_colour gray40 , bottom_colour gray40, left_colour gray40, right_colour gray40')
+    style_issue_open = xlwt.easyxf(
+        'pattern: pattern solid, fore_colour white ; font: colour_index gray80 ;borders:top 1,bottom 1, left 1, right 1, top_colour gray40 , bottom_colour gray40, left_colour gray40, right_colour gray40;align: wrap on')
+    style_issue_close = xlwt.easyxf(
+        'pattern: pattern solid, fore_colour white ; font: colour_index gray40 ;borders:top 1,bottom 1, left 1, right 1, top_colour gray40 , bottom_colour gray40, left_colour gray40, right_colour gray40;align: wrap on')
 
-    wb = xlwt.Workbook();
+
+
+    wb = xlwt.Workbook()
     ws = wb.add_sheet(u'局点问题')
     ws.write(0, 0, u"局点", style_header)
     ws.write(0, 1, u"问题描述", style_header)
@@ -165,24 +169,30 @@ def export():
     ws.col(7).width = 0x0d00
     ws.col(8).width = 0x0d00
     ws.col(9).width = 0x0d00 * 5
-    issues = Issue.query.order_by(Issue.create_time.desc()).all()
+    issues = Issue.query.order_by(Issue.status.desc()).order_by(Issue.id.desc()).all()
     for index, issue in enumerate(issues):
-        ws.write(index + 1, 0, issue.site, style_data)
-        ws.write(index + 1, 1, issue.desc, style_data)
-        ws.write(index + 1, 2, issue.product, style_data)
-        ws.write(index + 1, 3, issue.version, style_data)
-        ws.write(index + 1, 4, issue.liaison, style_data)
-        ws.write(index + 1, 5, issue.create_time, style_data)
+        style = style_issue_open
+        if issue.status == "Close":
+            style = style_issue_close
+        ws.write(index + 1, 0, issue.site, style)
+        ws.write(index + 1, 1, issue.desc, style)
+        ws.write(index + 1, 2, issue.product, style)
+        ws.write(index + 1, 3, issue.version, style)
+        ws.write(index + 1, 4, issue.liaison, style)
+        ws.write(index + 1, 5, issue.create_time, style)
 
         team = Team.query.filter_by(id=issue.team_id).first()
-        ws.write(index + 1, 6, team.name, style_data)
-        ws.write(index + 1, 7, issue.responsible, style_data)
-        ws.write(index + 1, 8, issue.status, style_data)
+        ws.write(index + 1, 6, team.name, style)
+        ws.write(index + 1, 7, issue.responsible, style)
+        ws.write(index + 1, 8, issue.status, style)
 
         tracks = ''
-        for t in issue.tracks:
-            tracks += t.time + ' ' + t.content + '\n'
-        ws.write(index + 1, 9, tracks, style_data)
+
+        for i, t in enumerate(issue.tracks):
+            if i != 0:
+                tracks += "\n"
+            tracks += t.time + ' ' + t.content
+        ws.write(index + 1, 9, tracks, style)
 
 
     filename = str(time.time()) + ".xls"
