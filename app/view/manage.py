@@ -45,7 +45,7 @@ def logout():
 @mod.route('/user/<uid>', methods=['GET', 'POST'])
 @login_required
 def user(uid):
-    if uid != g.user.id and not g.user.is_admin:
+    if int(uid) != g.user.id and not g.user.is_admin:
         return "Nop"
 
     if request.method == 'POST':
