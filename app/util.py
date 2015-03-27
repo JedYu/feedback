@@ -5,7 +5,6 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if g.user is None:
-            print 'g.user', g.user
             return redirect(url_for('manage.login', next=request.url))
         return f(*args, **kwargs)
     return decorated_function

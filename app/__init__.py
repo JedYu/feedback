@@ -7,7 +7,6 @@ from util import *
 
 app = Flask(__name__)
 app.config.from_object(config)
-print app.config.get('SQLALCHEMY_DATABASE_URI')
 db = SQLAlchemy(app)
 
 

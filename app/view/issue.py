@@ -27,7 +27,6 @@ def index():
 @mod.route('/add', methods=['GET','POST'])
 def add():
     if request.method == "POST":
-        print request.form['site'], request.method
         x = Issue(request.form.get('site', ''), request.form.get('desc', ''), request.form.get('product', ''),
                   request.form.get('version', ''), request.form.get('liaison', ''), request.form.get('create_time', ''),
                   request.form.get('responsible', ''), request.form.get('status', 'Open'))
@@ -45,7 +44,6 @@ def add():
         db.session.add(t)
         db.session.commit()
 
-        print x
         return redirect(url_for("issue.index"))
     else:
         return render_template('issue/create.html')
@@ -77,7 +75,6 @@ def edit(sid):
 @mod.route('/<sid>/del')
 def delete(sid):
     x = Issue.query.filter_by(id=sid).first()
-    print x
     db.session.delete(x)
     db.session.commit()
     return redirect(url_for("issue.index"))
@@ -120,13 +117,11 @@ def add_track(sid):
 def del_track(sid):
     tid = request.form.get('id', -1)
     if tid == -1:
-        print request.form.get('id', -1)
         return ""
 
     t = TrackRecord.query.filter_by(id=tid).first()
 
     if int(t.issue_id) != int(sid):
-        print t.issue_id, "!=", sid
         return ""
 
     db.session.delete(t)
@@ -188,8 +183,6 @@ def export():
     filename = str(time.time()) + ".xls"
 
     path = app.config.get('EXPORT_PATH') + filename
-
-    print path
 
     wb.save(path)
     return redirect(url_for('static', filename='export/' +filename))

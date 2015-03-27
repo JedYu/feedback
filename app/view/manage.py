@@ -15,7 +15,6 @@ mod = Blueprint('manage', __name__, url_prefix='/manage')
 @mod.route('/')
 @login_required
 def manage():
-    print g.user.is_admin
     if not g.user.is_admin:
         return render_template('manage/login.html')
     else:
@@ -25,7 +24,6 @@ def manage():
 @mod.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        print  request.form['number'], request.form['password']
 
         user = User.query.filter_by(number=request.form['number']).filter_by(
             password=get_encrypt_passwd(request.form['password'])).first()
@@ -37,7 +35,6 @@ def login():
         g.user = user
         return redirect(url_for('manage.manage'))
     else:
-        print request.args.get('next', '')
         return render_template('manage/login.html')
 @mod.route('/logout')
 def logout():
@@ -55,7 +52,6 @@ def user(uid):
 
         return redirect(url_for('manage.manage'))
     else:
-        print request.args.get('next', '')
         user = User.query.filter_by(id=uid).first()
         return render_template('manage/user.html', user=user)
 
@@ -77,10 +73,8 @@ def user_add():
         db.session.add(user)
         db.session.commit()
     except IntegrityError as e:
-        print "IntegrityError({0})".format(e.message)
         return jsonify(code=1, msg=u"该工号已被注册")
     except Exception as e:
-        print "Error({0})".format(e.message)
         return jsonify(code=1, msg=e.message)
 
     return jsonify(code=0, msg="")
@@ -122,7 +116,6 @@ def team_add():
         db.session.add(team)
         db.session.commit()
     except Exception as e:
-        print "Error({0})".format(e.message)
         return jsonify(code=1, msg=e.message)
 
     return jsonify(code=0, msg="")
