@@ -57,3 +57,7 @@ from app.view import issue, manage
 app.register_blueprint(manage.mod)
 app.register_blueprint(issue.mod)
 
+@app.route('/')
+@login_required
+def index():
+    return redirect(url_for("issue.index"))
