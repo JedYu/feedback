@@ -50,7 +50,7 @@ class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String(80), unique=True)
     manager_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    issues = db.relationship('Issue', backref=db.backref('team'), lazy='dynamic', order_by="desc(Issue.id), desc(Issue.status)")
+    issues = db.relationship('Issue', backref=db.backref('team'), lazy='dynamic', order_by="desc(Issue.status), desc(Issue.id)")
 
 
     def __init__(self, name, manager_id):
