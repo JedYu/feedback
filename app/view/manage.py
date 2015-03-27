@@ -15,8 +15,8 @@ mod = Blueprint('manage', __name__, url_prefix='/manage')
 @mod.route('/')
 @login_required
 def manage():
-    if not g.user.is_admin:
-        return render_template('manage/login.html')
+    if g.user.is_admin:
+        return redirect(url_for('manage.super'))
     else:
         return redirect(url_for('issue.index'))
 
