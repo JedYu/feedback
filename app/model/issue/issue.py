@@ -59,3 +59,9 @@ class Team(db.Model):
 
     def __repr__(self):
         return '<Team %r>' % (self.name)
+
+    def __eq__(self, other):
+        if isinstance(other, Team):
+            return self.id == other.id
+        else:
+            return self.id == other
