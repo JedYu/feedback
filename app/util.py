@@ -20,6 +20,31 @@ def admin_required(f):
     return decorated_function
 
 
+def require_issue_auth(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        sid = kwargs.get("sid", None)
+        if sid is None:
+            return "Unknown Issue"
+        if g.user is None:
+            return redirect(url_for('manage.login', next=request.url))
+
+        if g.user.is_admin:
+            return f(*args, **kwargs)
+
+        from model.issue.issue import Issue,Team
+        issue = Issue.query.filter_by(id=sid).first()
+        if not issue:
+            return "Unknown Issue"
+        team = Team.query.filter_by(id=issue.team_id).first()
+
+        if team in g.user.teams:
+            return f(*args, **kwargs)
+        else:
+            return "Not your issue"
+
+    return wrapper
+
 def get_encrypt_passwd(p):
     md5 = hashlib.md5()
     md5.update(p)

@@ -3,87 +3,87 @@ a:hover,
 a:focus,
 a:active,
 a.active {
-	outline: 0;
-	color: #18bc9c;
-	text-decoration:none;
-}
-body{
-	font-family: Tahoma, Verdana;
-}
-table {
-	table-layout: fixed;
-	word-wrap: break-word;
-	font-size: 12px;
+    outline: 0;
+    color: #18bc9c;
+    text-decoration: none;
 }
 
+body {
+    font-family: Tahoma, Verdana;
+}
+
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+    font-size: 12px;
+}
 
 .container textarea {
-	color: #333;
-	font-size: 12px;
+    color: #333;
+    font-size: 12px;
 }
+
 .container input {
-	color: #333;
-	font-size: 12px;
+    color: #333;
+    font-size: 12px;
 }
+
 .container select {
-	color: #333;
-	font-size: 12px;
+    color: #333;
+    font-size: 12px;
 }
 
-
-.inp{
-	width: 80%
+.inp {
+    width: 80%
 }
 
-.form-info-create{
-	font-size:12px;
-	padding: 20px 0 20px 0;
+.form-info-create {
+    font-size: 12px;
+    padding: 20px 0 20px 0;
 }
 
 .form-info-create textarea, .form-info-create input, .form-info-create select {
-	color: #333;
-	font-size: 12px;
+    color: #333;
+    font-size: 12px;
 }
 
+.footer {
 
-.footer{
-
-	padding: 20px 0 20px 0;
+    padding: 20px 0 20px 0;
 }
 
-.topbar{
-	padding-right: 20px;
+.topbar {
+    padding-right: 20px;
 }
+
 .navbar {
-	text-transform: uppercase;
-	font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
-	font-weight: 700;
+    text-transform: uppercase;
+    font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 700;
 }
 
-.track-record{
-	border-bottom:1px solid #EEE;
-	padding: 2px;
-	margin-right: 4px;
+.track-record {
+    border-bottom: 1px solid #EEE;
+    padding: 2px;
+    margin-right: 4px;
 }
 
-
-
-.issue-open{
-	color:#1c1c1c;
+.issue-open {
+    color: #1c1c1c;
 }
 
-.issue-close{
-	color:#A0A0A0;
+.issue-close {
+    color: #A0A0A0;
 }
 
-.label-title{
-	padding-left: 5px;
-	border-left: 1px solid #CCC;
-	color: #666;
-	font-size: 12px;
+.label-title {
+    padding-left: 5px;
+    border-left: 1px solid #CCC;
+    color: #666;
+    font-size: 12px;
 }
 
 .btn-custom {
-	color: #fff;
-	background-color: #1fa67b;
+    color: #fff;
+    background-color: #1fa67b;
 }
