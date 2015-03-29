@@ -10,10 +10,11 @@ app.config.from_object(config)
 db = SQLAlchemy(app)
 
 
+@app.errorhandler(401)
 @app.errorhandler(404)
-def not_found(error):
-    return render_template('404.html'), 404
-
+@app.errorhandler(502)
+def http_error(error):
+    return render_template('error.html', error=error)
 
 
 @app.before_request

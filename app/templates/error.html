@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ error.name }}{% endblock %}
+{% block container %}
+<div class="container text-center text-warning">
+<p style="font-size: 256px">{{ error.code }}</p>
+<p style="font-size: 64px">{{ error.name }}</p>
+<p style="font-size: 16px">{{ error.description }}</p>
+</div>
+{% endblock %}

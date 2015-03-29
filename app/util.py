@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import g, request, redirect, url_for
+from flask import g, request, redirect, url_for,abort
 import hashlib
 def login_required(f):
     @wraps(f)
@@ -41,7 +41,7 @@ def require_issue_auth(f):
         if team in g.user.teams:
             return f(*args, **kwargs)
         else:
-            return "Not your issue"
+            abort(401)
 
     return wrapper
 
