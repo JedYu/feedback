@@ -182,7 +182,12 @@ def export():
     ws.col(7).width = 0x0d00
     ws.col(8).width = 0x0d00
     ws.col(9).width = 0x0d00 * 5
-    issues = Issue.query.order_by(Issue.status.desc()).order_by(Issue.id.desc()).all()
+    issues = []
+    if g.user.is_admin:
+        issues = Issue.query.order_by(Issue.status.desc()).order_by(Issue.id.desc()).all()
+    else:
+        for team in g.user.teams:
+            issues.extend(Issue.query.filter_by(team_id=team.id).order_by(Issue.status.desc()).order_by(Issue.id.desc()).all())
     for index, issue in enumerate(issues):
         style = style_issue_open
         if issue.status == "Close":
