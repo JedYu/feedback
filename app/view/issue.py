@@ -32,6 +32,51 @@ def index():
 
     return render_template('issue/index.html', issues=issues, team_name=team_name, user=g.user)
 
+@mod.route('/chart', methods=['GET','POST'])
+@login_required
+def chart():
+
+    if request.method == "POST":
+        tid = request.form.get("tid", None)
+        if not tid:
+            if g.user.teams[0]:
+                tid = g.user.teams[0].id
+            else:
+                return "{}"
+
+
+        format = "%Y/%m/%d"
+        issues = Issue.query.filter_by(team_id=tid).all()
+
+        ss = {}
+        for issue in issues:
+
+            t1=time.strptime(issue.create_time,format)
+            if ss.has_key(str(t1.tm_year)):
+                ss[str(t1.tm_year)]['create'][t1.tm_mon  - 1] +=1
+            else:
+                ss[str(t1.tm_year)] = {}
+                ss[str(t1.tm_year)]['create'] = [0] * 12
+                ss[str(t1.tm_year)]['close'] = [0] * 12
+
+
+            try:
+                t2=time.strptime(issue.close_time,format)
+                if ss.has_key(str(t2.tm_year)):
+                    ss[str(t2.tm_year)]['close'][t1.tm_mon  - 1] +=1
+                else:
+                    ss[str(t2.tm_year)] = {}
+                    ss[str(t2.tm_year)]['create'] = [0] * 12
+                    ss[str(t2.tm_year)]['close'] = [0] * 12
+
+            except:
+                pass
+
+        print ss
+        return jsonify(ss=ss)
+    else:
+        return render_template('issue/chart.html')
+
 
 @mod.route('/add', methods=['GET','POST'])
 @login_required
@@ -97,9 +142,9 @@ def delete(sid):
 def close(sid):
     x = Issue.query.filter_by(id=sid).first()
     x.status = "Close"
-
-
     close_time = datetime.date.today().strftime('%Y/%m/%d')
+    x.close_time = close_time
+
     close_content = u"问题关闭"
 
     t = TrackRecord(close_time, close_content, x.id)

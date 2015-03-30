@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}图表{% endblock %}
+
+{% block container %}
+<div class="container">
+    <div class="text-center">
+        <select id="select_team">{% for team in g.teams %}
+            <option data-tid="{{team.id}}">{{team.name}}</option>
+            {% endfor %} </select>
+    </div>
+    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</div>
+{% endblock %}
+{% block scripts %}
+
+
+<script src="/static/js/highcharts.js"></script>
+<script type="text/javascript">
+    var load = function(tid){
+        $.post("/issue/chart",{"tid":tid}, function(data)
+        {
+            var create = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            var close = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+            if (data != "{}"  && data.ss != "{}" && data.ss["2015"] != undefined) {
+                create = data.ss["2015"]["create"];
+                close = data.ss["2015"]["close"];
+            }
+
+            $('#container').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: '局点问题'
+
+
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                categories: [
+                    '一月',
+                    '二月',
+                    '三月',
+                    '四月',
+                    '五月',
+                    '六月',
+                    '七月',
+                    '八月',
+                    '九月',
+                    '十月',
+                    '十一月',
+                    '十二月'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '问题数量'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: '新增',
+                data: create
+
+            }, {
+                name: '解决',
+                data: close
+            }]
+        });
+
+        });
+    };
+
+
+    $(function () {
+        load();
+    });
+
+    $("#select_team").change(function()
+    {
+        load($(this).find("option:selected").attr("data-tid"));
+    });
+</script>
+
+
+{% endblock %}
+

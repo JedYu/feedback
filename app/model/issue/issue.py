@@ -9,6 +9,7 @@ class Issue(db.Model):
     version = db.Column(db.String(64))
     liaison = db.Column(db.String(64))
     create_time = db.Column(db.String(64))
+    close_time = db.Column(db.String(64))
     responsible = db.Column(db.String(64))
     status = db.Column(db.String(8))
     team_id = db.Column(db.Integer, db.ForeignKey('team.id'))
