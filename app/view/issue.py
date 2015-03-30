@@ -11,18 +11,24 @@ mod = Blueprint('issue', __name__, url_prefix='/issue')
 @mod.route('/')
 @login_required
 def index():
-    tid = request.args.get('tid', None)
+    tag =  request.args.get('tag', None)
     team_name = u'全部'
     issues = []
-    if not tid:
-        issues = Issue.query.order_by(Issue.status.desc()).order_by(Issue.id.desc()).all()
+    if tag:
+        issues = Issue.query.filter(Issue.desc.like('%' + tag + '%')).all()
+        team_name = u'与"' + tag + u'"相关'
     else:
-        team = Team.query.filter_by(id=tid).first()
-        if team:
-            issues = team.issues
-            team_name = team.name
-        else:
+        tid = request.args.get('tid', None)
+
+        if not tid:
             issues = Issue.query.order_by(Issue.status.desc()).order_by(Issue.id.desc()).all()
+        else:
+            team = Team.query.filter_by(id=tid).first()
+            if team:
+                issues = team.issues
+                team_name = team.name
+            else:
+                issues = Issue.query.order_by(Issue.status.desc()).order_by(Issue.id.desc()).all()
 
     return render_template('issue/index.html', issues=issues, team_name=team_name, user=g.user)
 
