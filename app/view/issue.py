@@ -72,7 +72,6 @@ def chart():
             except:
                 pass
 
-        print ss
         return jsonify(ss=ss)
     else:
         return render_template('issue/chart.html')
