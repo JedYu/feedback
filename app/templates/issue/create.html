@@ -73,3 +73,12 @@
 </div>
 {% endblock %}
 
+{% block scripts %}
+<script type="text/javascript">
+var date = new Date();
+var y = date.getFullYear();
+var m = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) :"0" + (date.getMonth() + 1)
+var day = date.getDate();
+$("input[name='create_time']").val(y + "/" + m + "/" + day)
+</script>
+{% endblock %}

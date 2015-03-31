@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, g,json
 from app import db, app
 from app.model.issue.issue import Issue, TrackRecord, Team
 import datetime, time
-from app.util import login_required, require_issue_auth
+from app.util import *
 
 mod = Blueprint('issue', __name__, url_prefix='/issue')
 
@@ -44,33 +44,27 @@ def chart():
             else:
                 return "{}"
 
-
-        format = "%Y/%m/%d"
         issues = Issue.query.filter_by(team_id=tid).all()
 
         ss = {}
         for issue in issues:
+            t1 = data_format(issue.create_time)
+            if t1:
+                if ss.has_key(str(t1.tm_year)):
+                    ss[str(t1.tm_year)]['create'][t1.tm_mon  - 1] +=1
+                else:
+                    ss[str(t1.tm_year)] = {}
+                    ss[str(t1.tm_year)]['create'] = [0] * 12
+                    ss[str(t1.tm_year)]['close'] = [0] * 12
 
-            t1=time.strptime(issue.create_time,format)
-            if ss.has_key(str(t1.tm_year)):
-                ss[str(t1.tm_year)]['create'][t1.tm_mon  - 1] +=1
-            else:
-                ss[str(t1.tm_year)] = {}
-                ss[str(t1.tm_year)]['create'] = [0] * 12
-                ss[str(t1.tm_year)]['close'] = [0] * 12
-
-
-            try:
-                t2=time.strptime(issue.close_time,format)
+            t2= data_format(issue.close_time)
+            if t2:
                 if ss.has_key(str(t2.tm_year)):
                     ss[str(t2.tm_year)]['close'][t1.tm_mon  - 1] +=1
                 else:
                     ss[str(t2.tm_year)] = {}
                     ss[str(t2.tm_year)]['create'] = [0] * 12
                     ss[str(t2.tm_year)]['close'] = [0] * 12
-
-            except:
-                pass
 
         return jsonify(ss=ss)
     else:
@@ -158,7 +152,7 @@ def close(sid):
 def open(sid):
     x = Issue.query.filter_by(id=sid).first()
     x.status = "Open"
-
+    x.close_time = ""
     t = TrackRecord(datetime.date.today().strftime('%Y/%m/%d'), u"问题打开", x.id)
     db.session.add(t)
     db.session.commit()

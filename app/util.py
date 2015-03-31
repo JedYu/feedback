@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 from functools import wraps
 from flask import g, request, redirect, url_for,abort
-import hashlib
+import hashlib, time
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -54,3 +55,17 @@ def get_encrypt_passwd(p):
     return md5.hexdigest()
 
 
+def data_format(data):
+    formats = ["%Y/%m/%d", "%Y-%m-%d",u"%Y年%m月%d"]
+    st = None
+
+    for format in formats:
+        try:
+            st = time.strptime(data,format)
+        except:
+            continue
+
+        if st:
+            break;
+
+    return st
