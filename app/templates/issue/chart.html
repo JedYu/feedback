@@ -5,7 +5,7 @@
 <div class="container">
     <div class="text-center">
         <select id="select_team">{% for team in g.teams %}
-            <option data-tid="{{team.id}}">{{team.name}}</option>
+            <option data-tid="{{team.id}}"  {% if g.user.teams[0].id == team.id %} selected {%endif%}>{{team.name}}</option>
             {% endfor %} </select>
     </div>
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
