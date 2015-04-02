@@ -4,81 +4,81 @@
 
 {% block container %}
 <div class="container">
-	<form role="form" action="/issue/add" method="POST" id="login-form" autocomplete="off">
-		<div class="modal-content2">
-			<div class="page-header">
-				<h1>创建局点问题</h1>
-			</div>
-			<div class="form-info-create">
+    <form role="form" action="/issue/add" method="POST" id="login-form" autocomplete="off">
+        <div class="modal-content2">
+            <div class="page-header">
+                <h1>创建局点问题</h1>
+            </div>
+            <div class="form-info-create">
 
-				<div class="form-group">
-					<label for="site" class="label-title">局点</label>
-					<input type="text"  name="site" class="form-control" />
-				</div>
+                <div class="form-group">
+                    <label for="site" class="label-title">局点</label>
+                    <input type="text" name="site" class="form-control"/>
+                </div>
 
-				<div class="form-group">
-					<label for="desc" class="label-title">问题描述</label>
-					<textarea class="form-control"  name="desc" rows="3"></textarea>
-				</div>
+                <div class="form-group">
+                    <label for="desc" class="label-title">问题描述</label>
+                    <textarea class="form-control" name="desc" rows="3"></textarea>
+                </div>
 
-				<div class="form-group">
-					<div class="row">
-						<div class="col-lg-3">
-							<label for="liaison" class="label-title">接口人</label>
-							<input type="text"  name="liaison" class="form-control" />
-						</div>
-						<div class="col-lg-3">
-							<label for="create_time" class="label-title">提交时间</label>
-							<input type="text"  name="create_time" class="form-control" />
-						</div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="liaison" class="label-title">接口人</label>
+                            <input type="text" name="liaison" class="form-control"/>
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="create_time" class="label-title">提交时间</label>
+                            <input type="text" name="create_time" class="form-control"/>
+                        </div>
 
-						<div class="col-lg-3">
-							<label for="team" class="label-title">责任项目组</label>
-							<select  name="team" class="form-control" >
-								{% for team in g.teams %}
-								<option>{{team.name}}</option>
-								{% endfor %}
-							</select>
-						</div>
+                        <div class="col-lg-3">
+                            <label for="team" class="label-title">责任项目组</label>
+                            <select name="team" class="form-control">
+                                {% for team in g.teams %}
+                                <option>{{team.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-						<div class="col-lg-3">
-							<label for="responsible" class="label-title">责任人</label>
-							<input type="text" name="responsible" class="form-control" />
-						</div>
-					</div>
-				</div>
+                        <div class="col-lg-3">
+                            <label for="responsible" class="label-title">责任人</label>
+                            <input type="text" name="responsible" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
 
-				<div class="form-group">
-					<div class="row" >
-						<div class="col-lg-6">
-							<label for="product" class="label-title">产品</label>
-							<input type="text" name="product" class="form-control" />
-						</div>
-						<div class="col-lg-6">
-							<label for="version" class="label-title">版本</label>
-							<input type="text"  name="version" class="form-control"  />
-						</div>
-					</div>
-				</div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="product" class="label-title">产品</label>
+                            <input type="text" name="product" class="form-control"/>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="version" class="label-title">版本</label>
+                            <input type="text" name="version" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
 
-			</div>
+            </div>
 
-			<div class="footer">
-				<button type="submit" class="btn btn-lg btn-primary"> <i class="glyphicon glyphicon-ok-circle"></i>
-					创建
-				</button>
-			</div>
-		</div>
-	</form>
+            <div class="footer">
+                <button type="submit" class="btn btn-lg btn-primary"><i class="glyphicon glyphicon-ok-circle"></i>
+                    创建
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script type="text/javascript">
-var date = new Date();
-var y = date.getFullYear();
-var m = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) :"0" + (date.getMonth() + 1)
-var day = date.getDate();
-$("input[name='create_time']").val(y + "/" + m + "/" + day)
+    var date = new Date();
+    var y = date.getFullYear();
+    var m = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1)
+    var day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+    $("input[name='create_time']").val(y + "/" + m + "/" + day)
 </script>
 {% endblock %}
