@@ -185,7 +185,7 @@
     var d = new Date();
     var y = d.getFullYear();
     var m = (d.getMonth() + 1) > 9 ? (d.getMonth() + 1) : "0" + (d.getMonth() + 1)
-    var day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+    var day = d.getDate() > 9 ? d.getDate() : "0" + d.getDate();
 
 
     $("#input_track_time").val(y + "/" + m + "/" + day)
